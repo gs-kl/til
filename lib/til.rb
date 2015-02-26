@@ -5,16 +5,27 @@ module Til
   DEFAULT_DIRECTORY = File.expand_path("~/.til")
 
   def self.new_note(subject, title)
+    temp_file = Tempfile.new("new_note_content")
+    File.write(temp_file.path, "# #{title}\n\n")
+    original_text = File.read(temp_file.path)
+    system("vim", temp_file.path)
+    modified_text = File.read(temp_file.path)
+    temp_file.close
+    temp_file.unlink
 
-
-    # Should do these things only if changes saved to the temp file!
-    #
-    # subject_path = DEFAULT_DIRECTORY + "/#{subject.downcase}"
-    # if !File.directory? subject_path
-    #   FileUtils.mkdir(subject_path)
-    #   puts "Created a new directory for #{subject.downcase}"
-    # end
-
+    if original_text != modified_text
+      subject_path = DEFAULT_DIRECTORY + "/#{subject.downcase}"
+      if !File.directory? subject_path
+        FileUtils.mkdir(subject_path)
+        puts "Created a new directory for #{subject.downcase}"
+      end
+      file_path = subject_path + "/" + title.downcase.gsub(" ", "-") + ".md"
+      write_file = File.new(file_path, "w")
+      write_file.puts modified_text
+      write_file.close
+    else
+      puts "no change"
+    end
   end
 
   def self.list_notes_in(subject)
