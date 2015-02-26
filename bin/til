@@ -1,0 +1,5 @@
+#!/bin/ruby
+
+require 'til'
+
+Til::Cli.start(ARGV)
