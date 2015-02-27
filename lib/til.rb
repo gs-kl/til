@@ -24,7 +24,7 @@ module Til
       write_file.puts modified_text
       write_file.close
     else
-      puts "no change"
+      puts "You didn't write anything in the file, so it wasn't created.".red
     end
   end
 
@@ -44,18 +44,56 @@ module Til
   end
 
   def self.list_all_notes
-    Til.print_all Dir.glob(DEFAULT_DIRECTORY + "/**/*.md")
+    notes = Dir.glob(DEFAULT_DIRECTORY + "/**/*.md")
+    notes_and_mtimes = notes.map do |note_path|
+      [note_path, File.mtime(note_path)]
+    end
+    notes_and_mtimes.sort! {|x,y| y[1] <=> x[1]}
+
+    subjects_seen = Array.new
+    subject_colors = {
+      0 => :red,
+      1 => :cyan,
+      2 => :magenta,
+      3 => :green
+    }
+
+    puts "Listing all #{notes_and_mtimes.length} notes:".green.underline
+    notes_and_mtimes.each do |element|
+      note_path = element[0]
+      mtime = element[1]
+      subject = /\/([^\/]+)\/[^\/]+$/.match(note_path)[1]
+
+      subjects_seen.push(subject) unless subjects_seen.include?(subject)
+      index = subjects_seen.index subject
+      color = subject_colors[index]
+
+      date_modified = if mtime.strftime("%d-%b-%Y") == Date.today.strftime("%d-%b-%Y")
+          "today"
+        elsif mtime.strftime("%d-%b-%Y") == (Date.today - 1).strftime("%d-%b-%Y")
+          "yesterday"
+        elsif mtime.strftime("%d-%b-%Y") > (Date.today - 6).strftime("%d-%b-%Y")
+          mtime.strftime("%A")
+        else 
+          mtime.strftime("%b. %-d, %Y")
+        end
+
+      lines = IO.readlines(note_path)
+      puts subject.colorize(color).underline + ":\t" + Til.strip_markdown(lines[0].chomp).bold + " (" + date_modified + ")"
+    end
   end
+
+
 
   def self.print_all notes
     notes.each do |note|
       directory = /\/([^\/]+)\/[^\/]+$/.match(note)[1]
       lines = IO.readlines(note)
-      puts directory + ": " + Til.strip_markdown(lines[0].chomp).blue.underline + "  " + File.mtime(note).strftime("(%A, %b. %-d, %Y)").cyan
+      puts directory + ": " + Til.strip_markdown(lines[0].chomp).blue + "  " + File.mtime(note).strftime("(%A, %b. %-d, %Y)")
     end
   end
 
   def self.strip_markdown line
-    line.gsub("#","").strip
+    line.gsub(/#/,"").strip
   end
 end

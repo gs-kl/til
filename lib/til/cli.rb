@@ -4,12 +4,12 @@ require 'fileutils'
 
 module Til
   class Cli < Thor
-    desc 'new SUBJECT TITLE', 'Generate a new note with TITLE about SUBJECT'
+    desc "new SUBJECT TITLE", "Generate a new note with TITLE about SUBJECT"
     def new(subject, title)
       Til.new_note(subject, title)
     end
 
-    desc 'ls [SUBJECT]', 'List all notes (for SUBJECT)'
+    desc "ls [SUBJECT]", "List all notes (for SUBJECT)"
     def ls(subject = nil)
       if subject
         Til.list_notes_in(subject)
@@ -17,6 +17,5 @@ module Til
         Til.list_all_notes
       end
     end
-
   end
 end
