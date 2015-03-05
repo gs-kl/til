@@ -8,11 +8,11 @@ module Til
     end
 
     def pretty_printed_mtime
-      if mtime.strftime("%d-%b-%Y") == Date.today.strftime("%d-%b-%Y")
+      if mtime.to_date == Date.today
         "today"
-      elsif mtime.strftime("%d-%b-%Y") == (Date.today - 1).strftime("%d-%b-%Y")
+      elsif mtime == (Date.today - 1)
         "yesterday"
-      elsif mtime.strftime("%d-%b-%Y") > (Date.today - 6).strftime("%d-%b-%Y")
+      elsif mtime > (Date.today - 6)
         mtime.strftime("%A")
       else 
         mtime.strftime("%b. %-d, %Y")
@@ -20,8 +20,7 @@ module Til
     end
 
     def title
-      lines = IO.readlines(path)
-      lines[0].gsub("#","").chomp
+      content[0].gsub("#","").chomp
     end
 
     def content

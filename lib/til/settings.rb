@@ -1,3 +1,5 @@
+require 'pathname'
+
 module Til
   CONFIG_DIRECTORY = File.expand_path("~/.til")
 

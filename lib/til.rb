@@ -1,7 +1,7 @@
 require "til/version"
 require 'til/cli'
-require 'settings'
-require 'note'
+require 'til/settings'
+require 'til/note'
 
 module Til
 
