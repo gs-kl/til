@@ -2,25 +2,13 @@ require "til/version"
 require 'til/cli'
 require 'til/settings'
 require 'til/note'
+require 'til/directory'
+require 'til/note_writer'
 
 module Til
-
   def self.write_note title
-    temp_file = Tempfile.new("new_note_content")
-    File.write(temp_file.path, "# #{title}\n\n")
-    original_text = File.read(temp_file.path)
-    system("vim", temp_file.path)
-    modified_text = File.read(temp_file.path)
-    temp_file.close
-    temp_file.unlink
-
-    if modified_text != original_text
-      modified_text
-    else
-      return nil
-    end
+    NoteWriter.new(title).call
   end
-
 
   def self.print_working_directory
     puts Settings.directory
@@ -51,7 +39,7 @@ module Til
 
 
   def self.fetch_notes_in relative_path
-    Directory.from_relative(relative_path).notes.sort!(&:mtime)
+    Directory.from_relative(relative_path).notes.sort! { |a, b| b.mtime <=> a.mtime }
   end
 
 
