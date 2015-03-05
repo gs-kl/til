@@ -7,14 +7,23 @@ maybe `til git` could run whatever git commands are given in the til directory
 
 
 `cd` change to directory
+http://stackoverflow.com/questions/2429294/change-present-working-directory-of-a-calling-shell-from-a-ruby-script
 
+`til github`  open repo on github (if no remote repo on github specified, error)
+
+
+
+
+PROBLEMS
 
 titles with backticks in them blow up. zsh tries to run backticked text as a command. but can use backticks in strings in ruby with no problem.
 
+how to organize classes -- settings, note
 
-display dates like:
+how to actually interact with the settings file; does my way make sense?
 
-today
-yesterday
-thursday
-feb 21, 2015
+til/settings and note files only work when i'm in workspace/til
+
+
+
+
