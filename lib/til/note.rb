@@ -1,18 +1,24 @@
 module Til
   class Note
-    attr_accessor :path, :mtime, :subject
-    def initialize path, mtime, subject
+    attr_accessor :path
+    def initialize path
       @path = path
-      @mtime = mtime
-      @subject = subject
+    end
+
+    def mtime
+      File.mtime(path)
+    end
+
+    def subject
+      /\/([^\/]+)\/[^\/]+$/.match(path)[1]
     end
 
     def pretty_printed_mtime
-      if mtime.to_date == Date.today
+      if date_modified == Date.today
         "today"
-      elsif mtime == (Date.today - 1)
+      elsif date_modified == (Date.today - 1)
         "yesterday"
-      elsif mtime > (Date.today - 6)
+      elsif date_modified > (Date.today - 6)
         mtime.strftime("%A")
       else 
         mtime.strftime("%b. %-d, %Y")
@@ -25,6 +31,10 @@ module Til
 
     def content
       IO.readlines(path)
+    end
+
+    def date_modified
+      @date_modified ||= mtime.to_date
     end
   end
 end

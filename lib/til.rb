@@ -51,9 +51,7 @@ module Til
 
 
   def self.fetch_notes_in relative_path
-    Dir.glob(DIRECTORY + relative_path).map do |note_path|
-      Note.new(note_path, File.mtime(note_path), /\/([^\/]+)\/[^\/]+$/.match(note_path)[1])
-    end.sort! {|x,y| y.mtime <=> x.mtime}
+    Directory.from_relative(relative_path).notes.sort!(&:mtime)
   end
 
 
