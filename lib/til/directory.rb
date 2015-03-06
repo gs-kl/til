@@ -4,6 +4,7 @@ module Til
   class Directory
     attr_reader :path
 
+
     def self.from_relative(relative_path)
       self.new(DIRECTORY + relative_path)
     end

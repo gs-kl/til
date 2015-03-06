@@ -6,35 +6,36 @@ require 'til/directory'
 require 'til/note_writer'
 
 module Til
-  def self.write_note title
-    NoteWriter.new(title).call
-  end
-
   def self.print_working_directory
     puts Settings.directory
   end
 
-  def self.new_note(subject, title)
-    note_content = Til.write_note title
+  def self.open_working_directory
+    system("open", Settings.directory)
+  end
 
-    if note_content.nil?
+  def self.new_note(subject, title)
+    if_unmodified = Proc.new do
       puts "You didn't write anything, so a note wasn't created.".red
       return
     end
 
-    subject_path = DIRECTORY + "/#{subject.downcase}"
-    if !File.directory? subject_path
-      FileUtils.mkdir(subject_path)
-      puts "Created a new directory for #{subject.downcase}"
+    if_modified = Proc.new do |note_content|
+      subject_path = DIRECTORY + "/#{subject.downcase}"
+      if !File.directory? subject_path
+        FileUtils.mkdir(subject_path)
+        puts "Created a new directory for #{subject.downcase}"
+      end
+      file_path = subject_path + "/" + title.downcase.gsub(" ", "-") + ".md"
+
+      write_file = File.new(file_path, "w")
+      write_file.write note_content
+      write_file.close
+      puts "You created a new note in ".green + subject.green.bold + ". `til last` to read it.".green
     end
-    file_path = subject_path + "/" + title.downcase.gsub(" ", "-") + ".md"
 
-    write_file = File.new(file_path, "w")
-    write_file.write note_content
-    write_file.close
-    puts "You created a new note in ".green + subject.green.bold + ". `til last` to read it.".green
+    NoteWriter.new(title).call(if_modified, if_unmodified)
   end
-
 
 
 
@@ -53,9 +54,13 @@ module Til
 
 
   def self.print_all_notes
+    notes = Til.fetch_notes_in "/**/*.md"
+    notes.each {|note| Til.print note}
   end
 
-  def self.print_notes_in(subject)
+  def self.print_all_notes_in(subject)
+    notes = Til.fetch_notes_in "/#{subject}/*.md"
+    notes.each {|note| Til.print note}
   end
 
 

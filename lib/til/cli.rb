@@ -12,7 +12,7 @@ module Til
       Til.new_note(subject, title)
     end
 
-    desc "ls [SUBJECT]", "List all notes [for SUBJECT]"
+    desc "ls [SUBJECT]", "List all notes [on SUBJECT]"
     def ls(subject = nil)
       if subject
         Til.list_notes_in(subject)
@@ -34,6 +34,20 @@ module Til
     desc "last", "Print most recent note"
     def last
       Til.print_most_recent_note
+    end
+
+    desc "open", "Open TIL working directory"
+    def open
+      Til.open_working_directory
+    end
+
+    desc "printall [SUBJECT]", "Print all notes [on SUBJECT]"
+    def cat(subject=nil)
+      if subject
+        Til.print_all_notes_in(subject)
+      else
+        Til.print_all_notes
+      end
     end
 
 

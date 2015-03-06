@@ -6,20 +6,52 @@ module Til
       @title = title
     end
 
-    def call
-      temp_file = Tempfile.new("new_note_content")
-      File.write(temp_file.path, "# #{title}\n\n")
-      original_text = File.read(temp_file.path)
-      system("vim", temp_file.path)
-      modified_text = File.read(temp_file.path)
-      temp_file.close
-      temp_file.unlink
-
-      if modified_text != original_text
-        modified_text
-      else
-        return nil
-      end
+    def call(if_modified, if_unmodified)
+      temporary_note = TemporaryNote.new
+      temporary_note.write("# #{title}\n\n")
+      temporary_note.edit(if_modified, if_unmodified)
     end
+  end
+
+  class TemporaryNote
+    attr_reader :tempfile
+
+    def initialize(tempfile = Tempfile.new("new_note_content"))
+      @tempfile = tempfile
+    end
+
+    def write(text)
+      File.write(path, text)
+    end
+
+    def text
+      File.read(path)
+    end
+
+    def edit(if_modified, if_unmodified)
+      original_text = text
+      system("vim", path)
+      modified_text = text
+      
+      if original_text == modified_text
+        if_unmodified.call
+      else
+        if_modified.call(modified_text)
+      end
+
+      finish_editing
+    end
+
+    private
+
+    def path
+      tempfile.path
+    end
+
+    def finish_editing
+      tempfile.close
+      tempfile.unlink
+    end
+
   end
 end
