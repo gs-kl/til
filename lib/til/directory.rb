@@ -4,19 +4,28 @@ module Til
   class Directory
     attr_reader :path
 
-
-    def self.from_relative(relative_path)
-      self.new(DIRECTORY + relative_path)
+    def initialize(subject=nil)
+      if subject
+        @path = DIRECTORY + "#{subject}"
+      else
+        @path = DIRECTORY + "/**/*.md"
+      end
     end
 
-    def initialize(path)
-      @path = path
+    def self.root
+      self.new
+    end
+
+    def self.for(subject)
+      self.new(subject)
     end
 
     def notes
-      note_paths.map do |note_path|
-        Note.new(note_path)
+      note_list = NoteList.new
+      note_paths.each do |note_path|
+        note_list.push Note.new(note_path)
       end
+      note_list
     end
 
     private

@@ -39,16 +39,18 @@ module Til
 
 
 
-  def self.fetch_notes_in relative_path
-    Directory.from_relative(relative_path).notes.sort! { |a, b| b.mtime <=> a.mtime }
+  def self.fetch_notes_in subject
+    # Directory.for(subject).notes.sort! { |a, b| b.mtime <=> a.mtime }
+    Directory.for(subject).notes.sort_by_modified_time
   end
 
 
 
 
   def self.print_most_recent_note
-    note = (Til.fetch_notes_in "/**/*.md")[0]
-    Til.print note
+    p Directory.new.notes
+
+    # Til.print Note.new(Directory.new.notes[0].path)
   end
 
 
