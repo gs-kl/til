@@ -31,9 +31,9 @@ module Til
       Til.print_working_directory
     end
 
-    desc "last", "Print most recent note"
-    def last
-      Til.print_most_recent_note
+    desc "last [QUANTITY]", "Print [QUANTITY] most recent note[s]"
+    def last(quantity=1)
+      Til.print_most_recent_note quantity.to_i
     end
 
     desc "open", "Open TIL working directory"
@@ -42,13 +42,21 @@ module Til
     end
 
     desc "printall [SUBJECT]", "Print all notes [on SUBJECT]"
-    def cat(subject=nil)
+    def printall(subject=nil)
       if subject
         Til.print_all_notes_in(subject)
       else
         Til.print_all_notes
       end
     end
+
+
+    desc "editlast", "Edit most recently modified note"
+    def editlast
+      Til.open_preview_and_edit_last
+    end
+
+
 
 
     # def cd

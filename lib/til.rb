@@ -4,6 +4,8 @@ require 'til/settings'
 require 'til/note'
 require 'til/directory'
 require 'til/note_writer'
+require 'til/note_list'
+
 
 module Til
   def self.print_working_directory
@@ -39,36 +41,28 @@ module Til
 
 
 
-  def self.fetch_notes_in subject
-    # Directory.for(subject).notes.sort! { |a, b| b.mtime <=> a.mtime }
-    Directory.for(subject).notes.sort_by_modified_time
+
+
+  def self.open_preview_and_edit_last
+    NoteEditor.open(Directory.root.notes.most_recent).edit
   end
 
 
 
-
-  def self.print_most_recent_note
-    p Directory.new.notes
-
-    # Til.print Note.new(Directory.new.notes[0].path)
+  def self.print_most_recent_note quantity
+    Directory.root.notes.sort_by_modified_time.take(quantity).each {|note| Til.print note}
   end
-
-
 
   def self.print_all_notes
-    notes = Til.fetch_notes_in "/**/*.md"
-    notes.each {|note| Til.print note}
+    Directory.root.notes.each {|note| Til.print note}
   end
 
   def self.print_all_notes_in(subject)
-    notes = Til.fetch_notes_in "/#{subject}/*.md"
-    notes.each {|note| Til.print note}
+    Directory.for(subject).notes.each {|note| Til.print note}
   end
 
-
-
   def self.list_notes_in(subject)
-    notes = Til.fetch_notes_in "/#{subject}/*.md"
+    notes = Directory.for(subject).notes
     if notes.empty?
       puts "You don't seem to have any notes on that subject!"
       puts "You DO have notes on the following subjects:"
@@ -77,10 +71,6 @@ module Til
       Til.enumerate notes
     end
   end
-
-
-
-  # should have number of items in each
 
   def self.list_subjects(list_style=:bullet_points)
     subjects = Array.new
@@ -95,10 +85,8 @@ module Til
   end
 
 
-
-
   def self.list_all_notes
-    notes = Til.fetch_notes_in "/**/*.md"
+    notes = Directory.root.notes.sort_by_modified_time
     puts "Listing all #{notes.length} notes:".underline
     Til.enumerate notes
   end

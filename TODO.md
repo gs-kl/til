@@ -3,6 +3,15 @@ http://whatisthor.com/
 http://ruby-doc.org//stdlib-1.9.3/libdoc/tempfile/rdoc/Tempfile.html
 
 
+
+
+`find` should open search term if there's only one match, otherwise should present numbered list of matches and ask for the number of the one you want
+
+find should accept a `--subject` option, as well as maybe date options
+
+
+
+
 maybe `til git` could run whatever git commands are given in the til directory
 
 

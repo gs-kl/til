@@ -6,7 +6,7 @@ module Til
 
     def initialize(subject=nil)
       if subject
-        @path = DIRECTORY + "#{subject}"
+        @path = DIRECTORY + "/#{subject}/*.md"
       else
         @path = DIRECTORY + "/**/*.md"
       end
@@ -35,4 +35,3 @@ module Til
     end
   end
 end
-

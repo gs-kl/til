@@ -1,7 +1,7 @@
 module Til
+
   class NoteList
     attr_accessor :notes
-    delegate :push, to: :notes
 
     def initialize(notes=Array.new)
       @notes = notes
@@ -14,5 +14,21 @@ module Til
     def most_recent
       notes.sort { |a, b| b.mtime <=> a.mtime }.fetch(0)
     end
+
+
+
+    def push arg
+      self.notes.send(:push, arg)
+    end
+    def each &block
+      self.notes.send(:each, &block)
+    end
+    def empty?
+      self.notes.send(:empty?)
+    end
+    def length
+      self.notes.send(:length)
+    end
+
   end
 end
