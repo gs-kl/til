@@ -5,6 +5,7 @@ require 'til/note'
 require 'til/directory'
 require 'til/note_writer'
 require 'til/note_list'
+require 'til/note_editor'
 
 
 module Til
@@ -42,10 +43,44 @@ module Til
 
 
 
-
-  def self.open_preview_and_edit_last
-    NoteEditor.open(Directory.root.notes.most_recent).edit
+#!! to be updated
+  def self.search_results_for(keyword)
+    matches = NoteList.new
+    Directory.root.notes.each do |note|
+      if note.title.include?(keyword)
+        matches.push note
+      end
+    end
+    matches
   end
+
+#!! to be updated
+  def self.edit_file(search_term)
+    matches = Til.search_results_for(search_term)
+    if matches.length < 1
+      puts "no matches"
+    elsif matches.length == 1
+      NoteEditor.open(matches.first).edit
+    else
+      matches.each_with_index do |note, index|
+        puts "#{index+1}) #{note.title}"
+      end
+      choice = ask("Choice: ")
+      puts choice
+    end
+  end
+
+
+
+
+
+  def self.open_preview_and_edit(note)
+    NoteEditor.open(note).edit
+  end
+
+
+
+
 
 
 

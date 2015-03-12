@@ -30,7 +30,7 @@ module Til
 
     def edit(if_modified, if_unmodified)
       original_text = text
-      system("vim", path)
+      system(ENV["EDITOR"], path)
       modified_text = text
       
       if original_text == modified_text

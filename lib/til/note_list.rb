@@ -23,11 +23,17 @@ module Til
     def each &block
       self.notes.send(:each, &block)
     end
+    def each_with_index &block
+      self.notes.send(:each_with_index, &block)
+    end
     def empty?
       self.notes.send(:empty?)
     end
     def length
       self.notes.send(:length)
+    end
+    def first
+      self.notes.send(:first)
     end
 
   end

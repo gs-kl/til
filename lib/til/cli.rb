@@ -53,7 +53,13 @@ module Til
 
     desc "editlast", "Edit most recently modified note"
     def editlast
-      Til.open_preview_and_edit_last
+      Til.open_preview_and_edit(Directory.root.notes.most_recent)
+    end
+
+
+    desc "edit [SEARCH TERM]", "Edit file that matches search for [SEARCH TERM]. If multiple results, can select."
+    def edit(keyword)
+      Til.edit_file(keyword)
     end
 
 
