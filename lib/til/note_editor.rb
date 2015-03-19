@@ -16,7 +16,7 @@ module Til
       # preview = GithubMarkdownPreview::HtmlPreview.new(path)
       # preview.watch
       # system("open", preview.preview_file)
-      system(ENV["EDITOR"], path)
+      system(ENV["EDITOR"] || "vim", path)
       # preview.end_watch
       # preview.delete
     end

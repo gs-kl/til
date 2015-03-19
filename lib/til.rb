@@ -41,9 +41,6 @@ module Til
   end
 
 
-
-
-#!! to be updated
   def self.search_results_for(keyword)
     matches = NoteList.new
     Directory.root.notes.each do |note|
@@ -54,40 +51,28 @@ module Til
     matches
   end
 
-#!! to be updated
   def self.edit_file(search_term)
     matches = Til.search_results_for(search_term)
     if matches.length < 1
       puts "no matches"
     else
-      matches.filter
+      system(ENV["EDITOR"] || "vim", matches.filter.path)
     end
-
-#     elsif matches.length == 1
-#       NoteEditor.open(matches.first).edit
-#     else
-#       matches.each_with_index do |note, index|
-#         puts "#{index+1}) #{note.title}"
-#       end
-#       choice = ask("Choice: ")
-#       puts choice
-#     end
   end
 
-
-
-
-
-  def self.open_preview_and_edit(note)
-    NoteEditor.open(note).edit
+  def self.run_git_command(*args)
+    system("git --git-dir=#{Settings.directory}/.git --work-tree=#{Settings.directory} #{args.join(" ")}")
   end
 
+  def self.run_grep_command(*args)
+    system("grep -r #{args.join(" ")} #{Settings.directory}")
+  end
 
+  def self.run_ag_command(*args)
+    system("ag #{args.join(" ")} #{Settings.directory}")
+  end
 
-
-
-
-
+  
   def self.print_most_recent_note quantity
     Directory.root.notes.sort_by_modified_time.take(quantity).each {|note| Til.print note}
   end

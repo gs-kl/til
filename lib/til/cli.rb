@@ -62,13 +62,25 @@ module Til
       Til.edit_file(keyword)
     end
 
+    desc "git COMMAND", "Run Git COMMAND in TIL directory"
+    def git(*args)
+      Til.run_git_command(*args)
+    end
 
+
+    desc "grep COMMAND", "Run grep COMMAND in TIL directory"
+    def grep(*args)
+      Til.run_grep_command(*args)
+    end
+
+
+    desc "ag COMMAND", "Run Silver Searcher COMMAND in TIL directory"
+    def ag(*args)
+      Til.run_ag_command(*args)
+    end
 
 
     # def cd
-    # def git
-    # def cat
-    # def pwd
     # def grep
     # def tree
     # def github

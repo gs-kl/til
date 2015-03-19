@@ -1,6 +1,6 @@
 module Til
-
   class NoteList
+    include Thor::Base
     include Thor::Actions
     attr_accessor :notes
 
@@ -21,32 +21,46 @@ module Til
         notes.first
       else
         notes.each_with_index do |note, index|
-          puts "#{index+1}) #{note.title}"
+          puts "#{index+1}) #{note.title.bold} (#{note.subject})"
         end
-        choice = ask("Choice: ").to_int
-        notes.fetch(choice-1){puts "invalid choice"}
+      
+        begin
+          choice = ask("Choice: ").to_i
+        rescue Interrupt
+          warn "\nAborted!"
+          abort
+        end
+
+        notes.fetch(choice-1) do
+          puts "Invalid choice!"
+          abort
+        end
       end
     end
 
+    def method_missing(m, *args, &block)
+      notes.send(m, *args, &block)
+    end
 
-    def push arg
-      self.notes.send(:push, arg)
-    end
-    def each &block
-      self.notes.send(:each, &block)
-    end
-    def each_with_index &block
-      self.notes.send(:each_with_index, &block)
-    end
-    def empty?
-      self.notes.send(:empty?)
-    end
-    def length
-      self.notes.send(:length)
-    end
-    def first
-      self.notes.send(:first)
-    end
+
+    # def push arg
+    #   self.notes.send(:push, arg)
+    # end
+    # def each &block
+    #   self.notes.send(:each, &block)
+    # end
+    # def each_with_index &block
+    #   self.notes.send(:each_with_index, &block)
+    # end
+    # def empty?
+    #   self.notes.send(:empty?)
+    # end
+    # def length
+    #   self.notes.send(:length)
+    # end
+    # def first
+    #   self.notes.send(:first)
+    # end
 
   end
 end
