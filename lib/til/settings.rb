@@ -20,8 +20,11 @@ module Til
 
   HIGHLIGHT_COLORS = {
       0 => :yellow,
-      1 => :cyan,
+      1 => :light_blue,
       2 => :green,
       3 => :blue,
+      4 => :red,
+      5 => :magenta,
+      6 => :light_magenta,
     }
 end

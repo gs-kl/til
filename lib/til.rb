@@ -40,7 +40,6 @@ module Til
     NoteWriter.new(title).call(if_modified, if_unmodified)
   end
 
-
   def self.search_results_for(keyword)
     matches = NoteList.new
     Directory.root.notes.each do |note|
@@ -111,7 +110,7 @@ module Til
 
   def self.list_all_notes
     notes = Directory.root.notes.sort_by_modified_time
-    puts "Listing all #{notes.length} notes:".underline
+    puts "Listing all #{notes.length} notes: "
     Til.enumerate notes
   end
 
@@ -122,11 +121,13 @@ module Til
 
   def self.enumerate notes
     subjects_seen = Array.new
+    longest_subject_length = notes.sort_by{|note| note.subject.length}.last.subject.length
     notes.each do |note|
-      subjects_seen.push(note.subject)
+      subjects_seen.push(note.subject) if !subjects_seen.include?(note.subject)
       color_index = subjects_seen.index(note.subject) % HIGHLIGHT_COLORS.length
       color = HIGHLIGHT_COLORS[color_index]
-      puts note.subject.colorize(color).underline + ":\t" + note.title.bold + " (" + note.pretty_printed_mtime + ")"
+      spacing = " " * (longest_subject_length - note.subject.length)
+      puts note.subject.colorize(color) + ":" + spacing + note.title.bold + "(" + note.pretty_printed_mtime + ")"
     end
   end
 end
