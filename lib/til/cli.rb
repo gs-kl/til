@@ -41,8 +41,8 @@ module Til
       Til.open_working_directory
     end
 
-    desc "printall [SUBJECT]", "Print all notes [on SUBJECT]"
-    def printall(subject=nil)
+    desc "cat [SUBJECT]", "Print all notes [on SUBJECT]"
+    def cat(subject=nil)
       if subject
         Til.print_all_notes_in(subject)
       else

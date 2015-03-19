@@ -34,7 +34,7 @@ module Til
       write_file = File.new(file_path, "w")
       write_file.write note_content
       write_file.close
-      puts "You created a new note in ".green + subject.green.bold + ". `til last` to read it.".green
+      puts "You created a new note in ".green + subject.green.bold + ". `til last` to read it, or `til editlast` to edit it.".green
     end
 
     NoteWriter.new(title).call(if_modified, if_unmodified)
@@ -59,15 +59,19 @@ module Til
     matches = Til.search_results_for(search_term)
     if matches.length < 1
       puts "no matches"
-    elsif matches.length == 1
-      NoteEditor.open(matches.first).edit
     else
-      matches.each_with_index do |note, index|
-        puts "#{index+1}) #{note.title}"
-      end
-      choice = ask("Choice: ")
-      puts choice
+      matches.filter
     end
+
+#     elsif matches.length == 1
+#       NoteEditor.open(matches.first).edit
+#     else
+#       matches.each_with_index do |note, index|
+#         puts "#{index+1}) #{note.title}"
+#       end
+#       choice = ask("Choice: ")
+#       puts choice
+#     end
   end
 
 

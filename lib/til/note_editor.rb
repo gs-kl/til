@@ -1,4 +1,4 @@
-require 'github-markdown-preview' #!! seems to be slowing things down a lot if placed in til.rb
+# require 'github-markdown-preview' #!! seems to be slowing things down a lot if placed in til.rb
 
 module Til
   class NoteEditor
@@ -13,12 +13,12 @@ module Til
     end
     
     def edit
-      preview = GithubMarkdownPreview::HtmlPreview.new(path)
-      preview.watch
-      system("open", preview.preview_file)
+      # preview = GithubMarkdownPreview::HtmlPreview.new(path)
+      # preview.watch
+      # system("open", preview.preview_file)
       system(ENV["EDITOR"], path)
-      preview.end_watch
-      preview.delete
+      # preview.end_watch
+      # preview.delete
     end
   end
 end

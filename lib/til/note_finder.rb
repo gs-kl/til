@@ -17,19 +17,5 @@ module Til
     def self.find(search_term)
       self.new(search_term)
     end
-
-    def filter
-      if @matches.length == 1
-        @matches.first
-      else
-        @matches.each_with_index do |note, index|
-          puts "#{index+1}) #{note.title}"
-        end
-        choice = ask("Choice: ")
-        puts choice
-        @matches.fetch(choice-1)
-      end
-    end
-
   end
 end

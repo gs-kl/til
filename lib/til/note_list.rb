@@ -1,6 +1,7 @@
 module Til
 
   class NoteList
+    include Thor::Actions
     attr_accessor :notes
 
     def initialize(notes=Array.new)
@@ -15,6 +16,17 @@ module Til
       notes.sort { |a, b| b.mtime <=> a.mtime }.fetch(0)
     end
 
+    def filter
+      if notes.length == 1
+        notes.first
+      else
+        notes.each_with_index do |note, index|
+          puts "#{index+1}) #{note.title}"
+        end
+        choice = ask("Choice: ").to_int
+        notes.fetch(choice-1){puts "invalid choice"}
+      end
+    end
 
 
     def push arg
