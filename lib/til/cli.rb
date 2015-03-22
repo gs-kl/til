@@ -7,7 +7,7 @@ require 'json'
 module Til
 
   class Cli < Thor
-    desc "new SUBJECT TITLE", "Generate a new note with TITLE about SUBJECT"
+    desc "new SUBJECT TITLE", "Generate a new note with TITLE about SUBJECT. Make sure to escape characters where necessary to prevent shell interpretation."
     def new(subject, title)
       Til.new_note(subject, title)
     end
@@ -81,10 +81,8 @@ module Til
 
 
     # def cd
-    # def grep
     # def tree
     # def github
-    # def open    last, specific title
 
   end
 end

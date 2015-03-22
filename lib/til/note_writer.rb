@@ -16,7 +16,7 @@ module Til
   class TemporaryNote
     attr_reader :tempfile
 
-    def initialize(tempfile = Tempfile.new("new_note_content"))
+    def initialize(tempfile = Tempfile.new(["new_note_content", ".md"]))
       @tempfile = tempfile
     end
 

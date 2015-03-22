@@ -59,6 +59,7 @@ module Til
     end
   end
 
+
   def self.run_git_command(*args)
     system("git --git-dir=#{Settings.directory}/.git --work-tree=#{Settings.directory} #{args.join(" ")}")
   end
@@ -127,7 +128,7 @@ module Til
       color_index = subjects_seen.index(note.subject) % HIGHLIGHT_COLORS.length
       color = HIGHLIGHT_COLORS[color_index]
       spacing = " " * (longest_subject_length - note.subject.length)
-      puts note.subject.colorize(color) + ":" + spacing + note.title.bold + "(" + note.pretty_printed_mtime + ")"
+      puts note.subject.colorize(color) + ":" + spacing + note.title.bold + " (" + note.pretty_printed_mtime + ")"
     end
   end
 end

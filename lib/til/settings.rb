@@ -7,6 +7,7 @@ module Til
     settings_file = File.read(CONFIG_DIRECTORY + "/config.json")
     @@settings = JSON.parse(settings_file)
 
+
     def self.directory
       if Pathname.new(@@settings["directory"]).relative?
         File.expand_path @@settings["directory"]
