@@ -13,8 +13,9 @@ module Til
         choice = ask("Really delete \"#{note.title.bold}\" (in #{note.subject.bold})? (y/n)")
         if (choice == "y") || (choice == "yes")
           File.delete(note.path)
+          puts "\"#{note.title.bold}\" deleted.".green
         else
-          puts "File not deleted.".red
+          puts "\"#{note.title.bold}\" not deleted.".red
         end
       rescue Interrupt
         warn "\nAborted!"

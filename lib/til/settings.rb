@@ -2,30 +2,18 @@ require 'pathname'
 
 module Til
   class Settings
-    CONFIG_DIRECTORY = File.expand_path("~/.til")
+    attr_reader :settings
 
-    settings_file = File.read(CONFIG_DIRECTORY + "/config.json")
-    @@settings = JSON.parse(settings_file)
+    def initialize(config_file)
+      @settings = JSON.parse(File.read(config_file))
+    end
 
-    def self.directory
-      if Pathname.new(@@settings["directory"]).relative?
-        File.expand_path @@settings["directory"]
-      else
-        @@settings["directory"]
-      end
+    def self.load
+      self.new(File.expand_path("~/.til/config.json"))
+    end
+
+    def directory
+      File.expand_path(settings["directory"])
     end
   end
-
-
-  DIRECTORY = Settings.directory
-
-  HIGHLIGHT_COLORS = {
-      0 => :yellow,
-      1 => :light_blue,
-      2 => :green,
-      3 => :blue,
-      4 => :red,
-      5 => :magenta,
-      6 => :light_magenta,
-    }
 end

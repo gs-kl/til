@@ -10,12 +10,26 @@ require 'til/note_deleter'
 
 
 module Til
+
+  DIRECTORY = Settings.load.directory
+
+  HIGHLIGHT_COLORS = {
+      0 => :yellow,
+      1 => :light_blue,
+      2 => :green,
+      3 => :blue,
+      4 => :red,
+      5 => :magenta,
+      6 => :light_magenta,
+    }
+
+
   def self.print_working_directory
-    puts Settings.directory
+    puts DIRECTORY
   end
 
   def self.open_working_directory
-    system("open", Settings.directory)
+    system("open", DIRECTORY)
   end
 
   def self.new_note(subject, title)
@@ -77,23 +91,17 @@ module Til
 
 
   def self.run_git_command(*args)
-    system("git --git-dir=#{Settings.directory}/.git --work-tree=#{Settings.directory} #{args.join(" ")}")
+    system("git --git-dir=#{DIRECTORY}/.git --work-tree=#{DIRECTORY} #{args.join(" ")}")
   end
 
 
   def self.run_grep_command(*args)
-    system("grep -r #{args.join(" ")} #{Settings.directory}")
+    system("grep -r #{args.join(" ")} #{DIRECTORY}")
   end
 
   def self.run_ag_command(*args)
-    system("ag #{args.join(" ")} #{Settings.directory}")
+    system("ag #{args.join(" ")} #{DIRECTORY}")
   end
- 
-
-
-
-
-
 
 
   def self.print_most_recent_note quantity

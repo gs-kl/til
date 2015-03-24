@@ -6,6 +6,7 @@ require 'json'
 
 module Til
 
+
   class Cli < Thor
     desc "new SUBJECT \"TITLE\"", "Generate a new note with TITLE about SUBJECT. TITLE should be quoted and shell metacharacters escaped."
     def new(subject, title)
