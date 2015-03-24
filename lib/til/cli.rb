@@ -79,10 +79,9 @@ module Til
       Til.run_ag_command(*args)
     end
 
-
-    # def cd
-    # def tree
-    # def github
-
+    desc "rm [SEARCH TERM]", "Remove a file matching the search term. Prompts for confirmation."
+    def rm(keyword)
+      Til.remove_file(keyword)
+    end
   end
 end

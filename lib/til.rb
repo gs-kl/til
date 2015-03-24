@@ -6,6 +6,7 @@ require 'til/directory'
 require 'til/note_writer'
 require 'til/note_list'
 require 'til/note_editor'
+require 'til/note_deleter'
 
 
 module Til
@@ -40,15 +41,17 @@ module Til
     NoteWriter.new(title).call(if_modified, if_unmodified)
   end
 
-  def self.search_results_for(keyword)
+
+  def self.search_results_for(search_terms)
     matches = NoteList.new
     Directory.root.notes.each do |note|
-      if note.title.include?(keyword)
+      if note.title.downcase.include?(search_terms.downcase)
         matches.push note
       end
     end
     matches
   end
+
 
   def self.edit_file(search_term)
     matches = Til.search_results_for(search_term)
@@ -59,6 +62,14 @@ module Til
     end
   end
 
+  def self.remove_file(search_term)
+    matches = Til.search_results_for(search_term)
+    if matches.length < 1
+      puts "no matches"
+    else
+      NoteDeleter.delete(matches.filter)
+    end
+  end
 
   def self.run_git_command(*args)
     system("git --git-dir=#{Settings.directory}/.git --work-tree=#{Settings.directory} #{args.join(" ")}")
@@ -71,8 +82,8 @@ module Til
   def self.run_ag_command(*args)
     system("ag #{args.join(" ")} #{Settings.directory}")
   end
+ 
 
-  
   def self.print_most_recent_note quantity
     Directory.root.notes.sort_by_modified_time.take(quantity).each {|note| Til.print note}
   end
