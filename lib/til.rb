@@ -53,7 +53,11 @@ module Til
   end
 
 
-  def self.edit_file(search_term)
+  def self.edit_file(search_term, options)
+    if options[:last] 
+      system(ENV["EDITOR"] || "vim", Directory.root.notes.most_recent.path)
+      return
+    end
     matches = Til.search_results_for(search_term)
     if matches.length < 1
       puts "no matches"
@@ -67,13 +71,15 @@ module Til
     if matches.length < 1
       puts "no matches"
     else
-      NoteDeleter.delete(matches.filter)
+      NoteDeleter.new(matches.filter).delete
     end
   end
+
 
   def self.run_git_command(*args)
     system("git --git-dir=#{Settings.directory}/.git --work-tree=#{Settings.directory} #{args.join(" ")}")
   end
+
 
   def self.run_grep_command(*args)
     system("grep -r #{args.join(" ")} #{Settings.directory}")
@@ -83,6 +89,12 @@ module Til
     system("ag #{args.join(" ")} #{Settings.directory}")
   end
  
+
+
+
+
+
+
 
   def self.print_most_recent_note quantity
     Directory.root.notes.sort_by_modified_time.take(quantity).each {|note| Til.print note}
@@ -119,7 +131,6 @@ module Til
     end
   end
 
-
   def self.list_all_notes
     notes = Directory.root.notes.sort_by_modified_time
     puts "Listing all #{notes.length} notes: "
@@ -127,7 +138,7 @@ module Til
   end
 
   def self.print note
-    puts note.subject.underline + ":\t" + note.title.bold + " (" + note.pretty_printed_mtime + ")"
+    puts note.subject.underline + ": " + note.title.bold + " (" + note.pretty_printed_mtime + ")"
     puts note.content
   end
 
@@ -139,7 +150,7 @@ module Til
       color_index = subjects_seen.index(note.subject) % HIGHLIGHT_COLORS.length
       color = HIGHLIGHT_COLORS[color_index]
       spacing = " " * (longest_subject_length - note.subject.length)
-      puts note.subject.colorize(color) + ":" + spacing + note.title.bold + " (" + note.pretty_printed_mtime + ")"
+      puts note.subject.colorize(color) + ": " + spacing + note.title.bold + " (" + note.pretty_printed_mtime + ")"
     end
   end
 end

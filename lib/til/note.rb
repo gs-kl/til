@@ -26,7 +26,7 @@ module Til
     end
 
     def title
-      content[0].gsub("#","").chomp
+      content[0].gsub("# ","").chomp
     end
 
     def content

@@ -2,17 +2,17 @@ module Til
   class NoteDeleter
     include Thor::Base
     include Thor::Actions
+    attr_reader :note
 
     def initialize(note)
       @note = note
     end
 
-    def self.delete(note)
-      note_to_delete = self.new(note)
+    def delete
       begin
-        choice = ask("Really delete #{note_to_delete}? (y/n) ")
+        choice = ask("Really delete \"#{note.title.bold}\" (in #{note.subject.bold})? (y/n)")
         if (choice == "y") || (choice == "yes")
-          File.delete(note_to_delete.path)
+          File.delete(note.path)
         else
           puts "File not deleted.".red
         end
@@ -21,5 +21,6 @@ module Til
         abort
       end
     end
+
   end
 end

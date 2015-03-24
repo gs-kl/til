@@ -7,7 +7,7 @@ require 'json'
 module Til
 
   class Cli < Thor
-    desc "new SUBJECT TITLE", "Generate a new note with TITLE about SUBJECT. Make sure to escape characters where necessary to prevent shell interpretation."
+    desc "new SUBJECT \"TITLE\"", "Generate a new note with TITLE about SUBJECT. TITLE should be quoted and shell metacharacters escaped."
     def new(subject, title)
       Til.new_note(subject, title)
     end
@@ -50,16 +50,11 @@ module Til
       end
     end
 
-
-    desc "editlast", "Edit most recently modified note"
-    def editlast
-      Til.open_preview_and_edit(Directory.root.notes.most_recent)
-    end
-
-
-    desc "edit [SEARCH TERM]", "Edit file that matches search for [SEARCH TERM]. If multiple results, can select."
-    def edit(keyword)
-      Til.edit_file(keyword)
+    desc "edit [SEARCH TERM]", "Edit file that matches search for [SEARCH TERM]."
+    long_desc "`--last` flag"
+    option :last, type: :boolean
+    def edit(keyword="")
+      Til.edit_file(keyword, options)
     end
 
     desc "git COMMAND", "Run Git COMMAND in TIL directory"
