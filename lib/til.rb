@@ -49,7 +49,7 @@ module Til
       write_file = File.new(file_path, "w")
       write_file.write note_content
       write_file.close
-      puts "You created a new note in ".green + subject.green.bold + ". `til last` to read it, or `til editlast` to edit it.".green
+      puts "You created a new note in ".green + subject.green.bold + ". `til last` to read it, or `til edit --last` to edit it.".green
     end
 
     NoteWriter.new(title).call(if_modified, if_unmodified)

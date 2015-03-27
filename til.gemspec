@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'til/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "til"
+  spec.name          = "til_cli"
   spec.version       = Til::VERSION
   spec.authors       = ["Kevin"]
   spec.email         = ["litchfield.kevin+gs@gmail.com"]
