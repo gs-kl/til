@@ -6,9 +6,9 @@ require 'til/version'
 Gem::Specification.new do |spec|
   spec.name          = "til_cli"
   spec.version       = Til::VERSION
-  spec.authors       = ["Kevin"]
-  spec.email         = ["litchfield.kevin+gs@gmail.com"]
-  spec.summary       = %q{Generate new notes about stuff you learned}
+  spec.authors       = ["Kevin Litchfield"]
+  spec.email         = ["litchfield.kevin+github@gmail.com"]
+  spec.summary       = %q{Command-line notetaking application: a CRUD interface to a repo of "Today I Learned" notes. Inspired by the format of https://github.com/thoughtbot/til. Uses $EDITOR to create and edit notes, wraps Git for convenience, more features to come.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
